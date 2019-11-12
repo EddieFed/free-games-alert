@@ -1,0 +1,7 @@
+Current supported gateways:
+
+AT&T................*@mms.att.net
+Sprint..............*@pm.sprint.com
+T-Mobile............*@tmomail.net
+U.S. Cellular	USA...*@mms.uscc.net
+Verizon Wireless....*@vzwpix.com

@@ -1,5 +1,5 @@
-### Eddie's Free Games Alert!
-# A simple mms messanger that will let you know what's free!
+# Eddie's Free Games Alert!
+#### A simple mms messanger that will let you know what's free!
 
 One day I realized how many free games iwas missing from humble bundle, steam, epic games, etc.
 So I thought I'd whip this up real quick.

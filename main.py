@@ -11,7 +11,9 @@ import random
 
 from_addr = 'alert.free.games@gmail.com'
 # recipients = ['6309408929@mms.att.net', '6309408226@mms.att.net', '6307474342@mms.att.net', '6307474323@mms.att.net']
-recipients = ['6309408929@mms.att.net', '8478487510@tmomail.net']
+# recipients = ['6309408929@mms.att.net', '8478487510@tmomail.net', '8478109442@tmomail.net', '8477497533@tmomail.net']
+recipients = '8478487510@tmomail.net'
+
 
 # Options to create custom message
 phrases = ['Free Game!!!', 'Guess what? Free Game!', 'Here\'s a free game for you!', 'Enjoy a free game!', 'Surprise!']
@@ -24,8 +26,19 @@ def send_mail(name: str, link: str):
     :param link The link to the article
     Builds an email that will be sent to an mms gateway
     """
-    body = '%s\n.\n%s\n.\n%s\n%s' % (random.choice(phrases), random.choice(faces), name, link)
-    body = body.encode('utf-8')
+    subj = random.choice(phrases)
+    # body = 'From%s\n.\n%s\n.\n%s\n%s' % (random.choice(phrases), random.choice(faces), name, link)
+
+    # From: alert.free.games@gmail.com
+    # To: xxxxxxxxxx@something.net
+    # Subject: ''
+
+    body = """From: Free Games! <Alert.Free.Games@gmail.com>
+To: Person! <8478487510@tmomail.net>
+Subject: Hello!
+Message!"""
+
+    # body = body.encode('utf-8')
 
     server = smtplib.SMTP(host='smtp.gmail.com', port=587)
     server.starttls()

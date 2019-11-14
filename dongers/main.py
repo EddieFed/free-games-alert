@@ -20,7 +20,7 @@ dongerlist = '\n'.join(dongerlist)
 
 file = open('donger.txt', 'r+')
 file.write(dongerlist)        
-file.close
+file.close()
 
 print(random.choice(dongerlist))
 exit()

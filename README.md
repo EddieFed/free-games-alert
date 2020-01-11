@@ -1,7 +1,7 @@
 # Eddie's Free Games Alert!
-#### A simple mms messanger that will let you know what's free!
+#### A simple mms messenger that will let you know what's free!
 
-One day I realized how many free games iwas missing from humble bundle, steam, epic games, etc.
+One day I realized how many free gamesI iwas missing from humble bundle, steam, epic games, etc.
 So I thought I'd whip this up real quick.
 
 It just uses [IndieGameBundles](https://www.indiegamebundles.com/category/free/ "IndieGameBundles") as it's source for information (will probably be expanded soon)

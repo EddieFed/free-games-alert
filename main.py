@@ -10,55 +10,41 @@ import smtplib
 import requests
 from bs4 import BeautifulSoup
 import random
+import json
 
-from_addr = 'alert.free.games@gmail.com'
-# recipients = ['6309408929@mms.att.net', '6309408226@mms.att.net', '6307474342@mms.att.net', '6307474323@mms.att.net']
-# Eddie, Tommy, Mom, Dad
 
-# recipients = ['6309408929@mms.att.net', '8478487510@tmomail.net', '8478109442@tmomail.net', '8477497533@tmomail.net']
-# Eddie, Johnny, Kevin, Sule
+smtp_server: str = 'smtp.gmail.com'
 
-# recipients = ['8478487510@tmomail.net']
-# Kevin
-
-# recipients = ['6309408929@mms.att.net', '6304562592@tmomail.net']
-# Eddie, Murat
-
-# recipients = ['6309408929@mms.att.net']
-# Eddie
-
-recipients = ['6304562592@tmomail.net']
+from_addr: str = 'alert.free.games@gmail.com'
+recipients: list = ['eddie']
 
 # Options to create custom message
-phrases = ['Free Game!!!', 'Guess what? Free Game!', 'Here\'s a free game for you!', 'Enjoy a free game!', 'Surprise!']
-faces = ['ᕕ(⌐■_■)ᕗ ♪♬', '╰(✿˙ᗜ˙)੭━☆ﾟ.*･｡ﾟ', '_|___|_  ╰(º o º╰)', 'ᕕ( ・‿・)つ-●-●']
+phrases: list = ['Free Game!!!', 'Guess what? Free Game!',
+                 'Here\'s a free game for you!', 'Enjoy a free game!', 'Surprise!']
+faces: list = ['ᕕ(⌐■_■)ᕗ ♪♬', '╰(✿˙ᗜ˙)੭━☆ﾟ.*･｡ﾟ', '_|___|_  ╰(º o º╰)', 'ᕕ( ・‿・)つ-●-●']
 
 
-def send_mail(name: str, link: str, addr: str):
+def send_mail(g: str, link: str, addr: str) -> None:
     """
-    :param addr:
-    :param name The name of the game
-    :param link The link to the article
+    :param addr: Email of the recipient
+    :param g: The name of the game
+    :param link: The link to the article
     Builds an email that will be sent to an mms gateway
     """
     subj = random.choice(phrases)
-    # body = 'From%s\n.\n%s\n.\n%s\n%s' % (random.choice(phrases), random.choice(faces), name, link)
 
-    # From: alert.free.games@gmail.com
-    # To: xxxxxxxxxx@something.net
-    # Subject: ''
-
-    message = '%s\n.\n%s\n.\n%s\n%s' % (random.choice(phrases), random.choice(faces), name, link)
+    message = '%s\n.\n%s\n.\n%s\n%s' % (random.choice(phrases), random.choice(faces), g, link)
 
     body = """From: Free Games! <Alert.Free.Games@gmail.com>
 To: Person! <%s>
 Subject: 
 %s""" % (addr, message)
+
     body = body.encode('utf-8')
 
     print(body)
 
-    server = smtplib.SMTP(host='smtp.gmail.com', port=587)
+    server = smtplib.SMTP(host=smtp_server, port=587)
     server.starttls()
     server.login(from_addr, 'jjlol123')
     server.sendmail(from_addr, addr, body)
@@ -75,14 +61,21 @@ game = soup.find(class_='td-pb-span8 td-main-content').find(class_='entry-title 
 # We will use a text file to store the most recent article title on the website
 latest = open('latest.txt', 'w')
 
+
 # If the latest title received from the site doesn't match the title stored, that means there is a new game available!
 #
 # TODO
 # for production -> if latest.read() != game.get_text():
 
-# Since Emails must be sent one at a time because T-Mobile is a bitch I gotta use a loop
-for number in recipients:
-    send_mail(name=game.get_text(), link=game.a.get('href'), addr=number)
+# We will get phone data from phone.json
+# And since Emails must be sent one at a time because T-Mobile is a bitch I gotta use a loop
+phone_json: dict = json.load(open('phone.json', 'r'))
+for name in recipients:
 
-latest.write(game.get_text())
-latest.close()
+    # Formats recipient address
+    recipient: str = phone_json['contacts'][name]['phone'] + '@' + \
+                phone_json['carriers'][phone_json['contacts'][name]['carrier']]
+    # send_mail(g=game.get_text(), link=game.a.get('href'), addr=recipient)
+    send_mail("game", "https://www.example.com", recipient)
+# latest.write(game.get_text())
+# latest.close()

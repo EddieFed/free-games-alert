@@ -12,8 +12,7 @@ import requests
 import smtplib
 
 from bs4 import BeautifulSoup
-from email import encoders
-from email.mime.base import MIMEBase
+from email.mime.image import MIMEImage
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
@@ -23,7 +22,7 @@ phrases: list = ['Guess what? Free Game!', 'Here\'s a free game for you!', 'Enjo
 faces: list = ['ᕕ(⌐■_■)ᕗ ♪♬', '╰(✿˙ᗜ˙)੭━☆ﾟ.*･｡ﾟ', '_|___|_  ╰(º o º╰)', 'ᕕ( ・‿・)つ-●-●']
 
 from_addr: str = 'alert.free.games@gmail.com'
-recipients: list = ['eddie', 'murat']
+recipients: list = ['eddie', 'johnny', 'viraj']
 
 
 def send_mail(rec: str, t: str) -> None:
@@ -56,15 +55,9 @@ def formulate_mail(g: str, li: str, rec: str, i: str) -> str:
 
     # Open image in binary mode
     with requests.get(i) as attachment:
-        part = MIMEBase('application', 'octet-stream')
-        part.set_payload(attachment.content)
+        part = MIMEImage(attachment.content)
+        message.attach(part)
 
-    encoders.encode_base64(part)
-    part.add_header(
-        "Content-Disposition",
-        "attachment; filename=image.jpg",
-    )
-    message.attach(part)
     return message.as_string()
 
 

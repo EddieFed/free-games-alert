@@ -1,0 +1,9 @@
+# Ignored files
+
+.idea
+.idea/*
+dongers
+dongers/*
+
+th.jpg
+phone_numbers.json

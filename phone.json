@@ -1,0 +1,14 @@
+{
+    "carriers": {
+        "att": "mms.att.net",
+        "boost": "myboostmobile.com",
+        "cricket": "mms.cricketwireless.net",
+        "metro": "mymetropcs.com",
+        "sprint": "pm.sprint.com",
+        "tmobile": "tmomail.net",
+        "verizon": "vzwpix.com"
+    },
+    "contacts": {
+
+    }
+}

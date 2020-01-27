@@ -5,4 +5,10 @@
 dongers
 dongers/*
 
-phone.json
+test_data.json
+
+setup.py
+build
+build/*
+dist
+dist/*

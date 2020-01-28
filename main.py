@@ -61,35 +61,39 @@ def formulate_mail(g: str, li: str, rec: str, i: str) -> str:
     return message.as_string()
 
 
-# Sends a request for the entire page on IndieGameBundles
-r = requests.get('https://www.indiegamebundles.com/category/free/')
-r = r.text
-soup = BeautifulSoup(r, 'html.parser')
+def __main__():
+    # Sends a request for the entire page on IndieGameBundles
+    r = requests.get('https://www.indiegamebundles.com/category/free/')
+    r = r.text
+    soup = BeautifulSoup(r, 'html.parser')
 
-# Grabs the specific container that contains the latest post on the site
-game_data = soup.find(class_='entry-title td-module-title')
-game = game_data.get_text()
-link = game_data.a['href']
-image_link = soup.find(class_='td-image-wrap').img['data-img-url']
+    # Grabs the specific container that contains the latest post on the site
+    game_data = soup.find(class_='entry-title td-module-title')
+    game = game_data.get_text()
+    link = game_data.a['href']
+    image_link = soup.find(class_='td-image-wrap').img['data-img-url']
 
-# We will use a text file to store the most recent article title on the website
-latest = open('latest.txt', 'r+')
+    # We will use a text file to store the most recent article title on the website
+    latest = open('latest.txt', 'r+')
 
-# We will get phone data from phone.json
-# And since Emails must be sent one at a time because T-Mobile is a bitch I gotta use a loop
-# If the latest title received from the site doesn't match the title stored, that means there is a new game available!
-phone_json: dict = json.load(open('phone.json', 'r'))
-if latest.read() != game:
-    for name in recipients:
+    # We will get phone data from phone.json
+    # And since Emails must be sent one at a time because T-Mobile is a bitch I gotta use a loop
+    # If the latest title received from the site doesn't match the title stored,
+    # that means there is a new game available!
+    phone_json: dict = json.load(open('phone.json', 'r'))
+    if latest.read() != game:
+        for name in recipients:
 
-        # Formats recipient address
-        recipient: str = phone_json['contacts'][name]['phone'] + '@' + \
-                    phone_json['carriers'][phone_json['contacts'][name]['carrier']]
-        body_text = formulate_mail(g=game, li=link, rec=recipient, i=image_link)
-        send_mail(rec=recipient, t=body_text)
+            # Formats recipient address
+            recipient: str = phone_json['contacts'][name]['phone'] + '@' + \
+                        phone_json['carriers'][phone_json['contacts'][name]['carrier']]
+            body_text = formulate_mail(g=game, li=link, rec=recipient, i=image_link)
+            send_mail(rec=recipient, t=body_text)
 
-    print('Mail sent!')
-    latest.write(game)
-    latest.close()
-else:
-    print('No new game!')
+        print('Mail sent!')
+        latest.write(game)
+        latest.close()
+    else:
+        print('No new game!')
+
+    __main__()

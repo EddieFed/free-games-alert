@@ -8,6 +8,7 @@ import json
 
 
 def __main__():
+    """  """
     try:
 
         with open("phone.json", "r+") as file:

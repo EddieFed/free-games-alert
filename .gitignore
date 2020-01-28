@@ -1,14 +1,18 @@
-# Ignored files
-
+# PyCharm files
 .idea
 .idea/*
-dongers
-dongers/*
 
-test_data.json
-
+# Py2app Stuff
 setup.py
 build
 build/*
 dist
 dist/*
+.eggs
+.eggs/*
+
+# Test data and stuffs
+test_data.json
+dependencies.txt
+dongers
+dongers/*

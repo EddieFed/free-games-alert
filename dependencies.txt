@@ -1,7 +1,0 @@
-free_games:
-
-python 3.7.x
-
-    - smtplib
-    - requests
-    - BeautifulSoup4

@@ -3,7 +3,6 @@
 .idea/*
 
 # Py2app Stuff
-setup.py
 build
 build/*
 dist
@@ -16,3 +15,8 @@ test_data.json
 dependencies.txt
 dongers
 dongers/*
+
+new_contact.app
+new_contact.app/*
+main.app
+main.app/*

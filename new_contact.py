@@ -42,3 +42,5 @@ def __main__():
 
 
 __main__()
+
+exit(code=1000)

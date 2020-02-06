@@ -20,3 +20,6 @@ new_contact.app
 new_contact.app/*
 main.app
 main.app/*
+
+#main.spec
+#free-games.spec

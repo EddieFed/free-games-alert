@@ -37,6 +37,9 @@ def send_mail(rec: str, t: str) -> None:
     server.login(from_addr, 'jjlol123')
     server.sendmail(from_addr, rec, t)
 
+    print('Mail sent to "', rec, '"!')
+    return None
+
 
 def formulate_mail(g: str, li: str, rec: str, i: str) -> str:
     """
@@ -61,7 +64,7 @@ def formulate_mail(g: str, li: str, rec: str, i: str) -> str:
     return message.as_string()
 
 
-def __main__():
+def __main__(app_path):
     # Sends a request for the entire page on IndieGameBundles
     r = requests.get('https://www.indiegamebundles.com/category/free/')
     r = r.text
@@ -74,15 +77,20 @@ def __main__():
     image_link = soup.find(class_='td-image-wrap').img['data-img-url']
 
     # We will use a text file to store the most recent article title on the website
-    latest = open('latest.txt', 'r+')
+    latest = open(app_path + '/latest.txt', 'r+')
 
     # We will get phone data from phone.json
     # And since Emails must be sent one at a time because T-Mobile is a bitch I gotta use a loop
     # If the latest title received from the site doesn't match the title stored,
     # that means there is a new game available!
-    phone_json: dict = json.load(open('phone.json', 'r'))
+    phone_json: dict = json.load(open(app_path + '/phone.json', 'r'))
+
+    if len(phone_json['contacts']) == 0:
+        print('Please add a contact before running')
+        return None
+
     if latest.read() != game:
-        for name in recipients:
+        for name in phone_json['contacts'].keys():
 
             # Formats recipient address
             recipient: str = phone_json['contacts'][name]['phone'] + '@' + \
@@ -90,10 +98,8 @@ def __main__():
             body_text = formulate_mail(g=game, li=link, rec=recipient, i=image_link)
             send_mail(rec=recipient, t=body_text)
 
-        print('Mail sent!')
+        # print('Mail sent!')
         latest.write(game)
         latest.close()
     else:
         print('No new game!')
-
-    __main__()

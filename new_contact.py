@@ -7,11 +7,11 @@ Copyright 2020 Eddie Federmeyer
 import json
 
 
-def __main__():
+def __main__(app_path):
     """  """
     try:
 
-        with open("phone.json", "r+") as file:
+        with open(app_path + "/phone.json", "r+") as file:
             tmp_json: dict = json.load(file)
 
             name: str = input("Name: ")
@@ -38,9 +38,5 @@ def __main__():
             file.close()
 
     except IOError:
+
         print("File does not exist, did you delete it?")
-
-
-__main__()
-
-exit(code=1000)

@@ -6,8 +6,21 @@
 import new_contact
 import listener
 import os
-import pathlib
 import sys
+
+import tkinter
+
+root = tkinter.Tk()
+label = tkinter.Label(master=root, text="Name:")
+label.pack(side=tkinter.LEFT)
+textbox = tkinter.Entry(master=root)
+# textbox.insert(0, "What is your name?")
+textbox.pack()
+button = tkinter.Button(master=root, text="Hello!")
+button.pack()
+tkinter.mainloop()
+
+sys.exit(0)
 
 app_path = ""
 if getattr(sys, 'frozen', False):

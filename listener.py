@@ -15,14 +15,14 @@ from email.mime.image import MIMEImage
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-# Load settings // Replace with enviroment var refs
+# Load settings // Replace with enviroment var refs (use a or b)
 #
 # If getting errors with authentication and using gmail.
 # visit https://myaccount.google.com/lesssecureapps to unlock email
 settings = json.load(open('./settings.json', 'r+'))
-smtp_server = settings['smtp server'] or None
-from_addr = settings['email'] or None
-password = settings['password'] or None
+smtp_server = settings['smtp server']
+from_addr = settings['email']
+password = settings['password']
 
 # Message Decor
 phrases = ['Guess what? Free Game!', 'Here\'s a free game for you!', 'Enjoy a free game!', 'Surprise!']
@@ -74,7 +74,7 @@ def __main__():
         # And since Emails must be sent one at a time because T-Mobile is a bitch I gotta use a loop
         # If the latest title received from the site doesn't match the title stored,
         # That means there is a new game available!
-        phone_json = json.load(open('./phone.json', 'r'))
+        phone_json = json.load(open('./settings.json', 'r'))
 
         # Double checks if any contacts exist
         if len(phone_json['contacts']) == 0:

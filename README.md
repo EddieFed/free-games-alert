@@ -1,6 +1,8 @@
 # Eddie's Free Games Alert!
 #### A simple mms messenger that will let you know what's free!
 
+# ** new_contact.py and main.py are useless for now, simply run listener.py if you'd like to try this... **
+
 One day I realized how many free games I was missing from humble bundle, steam, epic games, etc.
 So I thought I'd whip this up real quick.
 

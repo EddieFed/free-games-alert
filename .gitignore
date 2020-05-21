@@ -11,15 +11,5 @@ dist/*
 .eggs/*
 
 # Test data and stuffs
-test_data.json
-dependencies.txt
-dongers
-dongers/*
-
-new_contact.app
-new_contact.app/*
-main.app
-main.app/*
-
-#main.spec
-#free-games.spec
+settings.json
+phone_test.json

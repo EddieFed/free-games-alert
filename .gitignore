@@ -2,14 +2,5 @@
 .idea
 .idea/*
 
-# Py2app Stuff
-build
-build/*
-dist
-dist/*
-.eggs
-.eggs/*
-
 # Test data and stuffs
 settings.json
-phone.json

@@ -22,7 +22,7 @@ phrases: list = ['Guess what? Free Game!', 'Here\'s a free game for you!', 'Enjo
 faces: list = ['ᕕ(⌐■_■)ᕗ ♪♬', '╰(✿˙ᗜ˙)੭━☆ﾟ.*･｡ﾟ', '_|___|_  ╰(º o º╰)', 'ᕕ( ・‿・)つ-●-●']
 
 from_addr: str = 'alert.free.games@gmail.com'
-recipients: list = ['eddie', 'johnny', 'viraj']
+recipients: list = ['eddie']
 
 
 def send_mail(rec: str, t: str) -> None:
@@ -34,7 +34,7 @@ def send_mail(rec: str, t: str) -> None:
 
     server = smtplib.SMTP(host=smtp_server, port=587)
     server.starttls()
-    server.login(from_addr, 'jjlol123')
+    server.login(from_addr, '<password>')
     server.sendmail(from_addr, rec, t)
 
     print('Mail sent to "', rec, '"!')

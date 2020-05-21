@@ -12,4 +12,4 @@ dist/*
 
 # Test data and stuffs
 settings.json
-phone_test.json
+phone.json

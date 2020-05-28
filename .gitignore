@@ -1,6 +1,4 @@
-# PyCharm files
+__pycache__
+temp.json
 .idea
 .idea/*
-
-# Test data and stuffs
-settings.json

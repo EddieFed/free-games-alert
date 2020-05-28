@@ -5,6 +5,7 @@
 
     Copyright 2019 Eddie Federmeyer
 """
+import os
 import json
 import random
 import requests
@@ -14,15 +15,23 @@ from bs4 import BeautifulSoup
 from email.mime.image import MIMEImage
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from app import db, ContactsModel, LatestModel
 
-# Load settings // Replace with enviroment var refs (use a or b)
+
+# Load settings
 #
 # If getting errors with authentication and using gmail.
 # visit https://myaccount.google.com/lesssecureapps to unlock email
-settings = json.load(open('./settings.json', 'r+'))
-smtp_server = settings['smtp server']
-from_addr = settings['email']
-password = settings['password']
+try:
+    smtp_server = os.environ['smtp']
+    from_addr = os.environ['email']
+    password = os.environ['password']
+except KeyError:
+    print('Using local temp.json for settings...')
+    temp = json.load(open('temp.json', 'r'))
+    smtp_server = temp['smtp']
+    from_addr = temp['email']
+    password = temp['password']
 
 # Message Decor
 phrases = ['Guess what? Free Game!', 'Here\'s a free game for you!', 'Enjoy a free game!', 'Surprise!']
@@ -62,31 +71,26 @@ def __main__():
     link = game_data.a['href']
     image_link = soup.find(class_='td-image-wrap').img['data-img-url']
 
-    # We will use a text file to store the most recent article title on the website
-    latest = open('./latest.txt', 'r+')
-    # Double checks that the game is different then the previous free game
-    if latest.read() != game:
-        # Write the new game to the file so I don't forget...
-        latest.write(game)
-        latest.close()
+    # Double checks that the game is different then the latest free game
+    if db.session.query(LatestModel).filter(LatestModel.game == game).count() == 0:
+        # Write the new game to the db so I don't forget...
+        db_latest_data = LatestModel(game)
+        db.session.add(db_latest_data)
+        db.session.commit()
 
-        # We will get phone data from phone.json
+        # We will get gateway data from carriers.json
         # And since Emails must be sent one at a time because T-Mobile is a bitch I gotta use a loop
-        # If the latest title received from the site doesn't match the title stored,
-        # That means there is a new game available!
-        phone_json = json.load(open('./settings.json', 'r'))
+        carriers = json.load(open('./carriers.json', 'r'))
 
         # Double checks if any contacts exist
-        if len(phone_json['contacts']) == 0:
+        if db.session.query(ContactsModel).count() == 0:
             print('Please add a contact before running')
             return
 
         # For every contact, format sms gateway
-        for contact in phone_json['contacts']:
+        for contact in db.session.query(ContactsModel).all():
             # Formats recipient address
-            recipient = contact['phone'] + '@' + phone_json['carriers'][contact['carrier']]
-            # body_text = formulate_mail(g=game, li=link, rec=recipient, i=image_link)
-            # send_mail(rec=recipient, t=body_text)
+            recipient = contact.phone + '@' + carriers[contact.carrier]
             send_mail(game=game, link=link, recipient=recipient, image_link=image_link)
 
         print('Mailing list finished!')
@@ -95,4 +99,5 @@ def __main__():
         print('No new game!')
 
 
-__main__()
+if __name__ == '__main__':
+    __main__()

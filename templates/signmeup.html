@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="" />
+    <title>Free games alert</title>
+
+</head>
+<body>
+
+    <div class="m-5">
+        <h1>Free games?</h1>
+        <p>That's crazy!</p>
+    </div>
+    <p class="m-5 text-body">Want to get notified when a game is free on Steam, Epic Games, IndieGala, etc.?<br>Sign up below!</p>
+
+    <form action="/signmeup" method="POST" class="m-5">
+
+        <!--Name-->
+        <div class="form-group">
+            <label for="name">Name: </label>
+            <input id="name" type="text" name="name" placeholder="John Joe" required>
+        </div>
+
+        <!--Phone Number-->
+        <div class="form-group">
+            <label for="phone">Phone Number: </label>
+            <input id="phone" type="tel" name="phone" placeholder="123-345-7890" pattern="[0-9]{3}(-|)[0-9]{3}(-|)[0-9]{4}" required>
+        </div>
+
+        <!--Carrier-->
+        <div class="form-group">
+            <label for="carrier">Carrier: </label>
+            <select id="carrier" name="carrier">
+                <option value="att">AT&T</option>
+                <option value="boost">Boost Mobile</option>
+                <option value="cricket">Cricket Wireless</option>
+                <option value="metro">MetroPCS</option>
+                <option value="sprint">Sprint</option>
+                <option value="tmobile">T-Mobile</option>
+                <option value="verizon">Verizon</option>
+            </select>
+        </div>
+
+        <!--Email-->
+        <div class="form-group">
+            <label for="email">email: </label>
+            <input id="email" type="email" name="email" placeholder="email@example.com">
+        </div>
+
+        <input type="submit" value="Submit" class="btn" />
+    </form>
+
+
+</body>
+</html>

@@ -1,4 +1,6 @@
 __pycache__
-temp.json
+
+config/temp.json
+
 .idea
 .idea/*

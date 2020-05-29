@@ -5,33 +5,18 @@
 
     Copyright 2019 Eddie Federmeyer
 """
-import os
 import json
 import random
 import requests
 import smtplib
-
 from bs4 import BeautifulSoup
 from email.mime.image import MIMEImage
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+
+# Local references
 from app import db, ContactsModel, LatestModel
-
-
-# Load settings
-#
-# If getting errors with authentication and using gmail.
-# visit https://myaccount.google.com/lesssecureapps to unlock email
-try:
-    smtp_server = os.environ['smtp']
-    from_addr = os.environ['email']
-    password = os.environ['password']
-except KeyError:
-    print('Using local temp.json for settings...')
-    temp = json.load(open('temp.json', 'r'))
-    smtp_server = temp['smtp']
-    from_addr = temp['email']
-    password = temp['password']
+from config.vars import EMAIL_ADDRESS, EMAIL_PASSWORD, SMTP_SERVER
 
 # Message Decor
 phrases = ['Guess what? Free Game!', 'Here\'s a free game for you!', 'Enjoy a free game!', 'Surprise!']
@@ -40,7 +25,7 @@ faces = ['ᕕ(⌐■_■)ᕗ ♪♬', '╰(✿˙ᗜ˙)੭━☆ﾟ.*･｡ﾟ', 
 
 def send_mail(game: str, link: str, recipient: str, image_link: str) -> None:
     message = MIMEMultipart()
-    message['FROM'] = from_addr
+    message['FROM'] = EMAIL_ADDRESS
     message['TO'] = recipient
     message['SUBJECT'] = random.choice(phrases)
     message.attach(MIMEText(random.choice(faces) + '\n.\n' + game + '\n' + link, 'plain'))
@@ -50,10 +35,10 @@ def send_mail(game: str, link: str, recipient: str, image_link: str) -> None:
         part = MIMEImage(attachment.content)
         message.attach(part)
 
-    server = smtplib.SMTP(host=smtp_server, port=587)
+    server = smtplib.SMTP(host=SMTP_SERVER, port=587)
     server.starttls()
-    server.login(from_addr, password)
-    server.sendmail(from_addr, recipient, message.as_string())
+    server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+    server.sendmail(EMAIL_ADDRESS, recipient, message.as_string())
 
     print('Mail sent to "', recipient, '"!')
     return None
@@ -80,15 +65,15 @@ def __main__():
 
         # We will get gateway data from carriers.json
         # And since Emails must be sent one at a time because T-Mobile is a bitch I gotta use a loop
-        carriers = json.load(open('./carriers.json', 'r'))
+        carriers = json.load(open('carriers.json', 'r'))
 
         # Double checks if any contacts exist
-        if db.session.query(ContactsModel).count() == 0:
-            print('Please add a contact before running')
+        if db.session.query(ContactsModel).filter(ContactsModel.send == True).count() == 0:
+            print('Please confirm a contact before running')
             return
 
         # For every contact, format sms gateway
-        for contact in db.session.query(ContactsModel).all():
+        for contact in db.session.query(ContactsModel).filter(ContactsModel.send == True).all():
             # Formats recipient address
             recipient = contact.phone + '@' + carriers[contact.carrier]
             send_mail(game=game, link=link, recipient=recipient, image_link=image_link)

@@ -1,6 +1,10 @@
 from flask import Flask, request, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+import json
 import os
+
+# Local references
+from send_confirmation import confirm
 
 app = Flask(__name__)
 
@@ -11,7 +15,7 @@ try:
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 except KeyError:
     print('Running with test db...\n\n')
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://postgres:root@localhost/test'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://postgres:root@192.168.1.140/test'
 
 
 db = SQLAlchemy(app)
@@ -23,6 +27,7 @@ class ContactsModel(db.Model):
     phone = db.Column(db.String(10), unique=True)
     carrier = db.Column(db.String())
     email = db.Column(db.String())
+    send = db.Column(db.Boolean(), default=False)
 
     def __init__(self, name, phone, carrier, email):
         self.name = name
@@ -59,6 +64,10 @@ def signmeup():
             return 'Please include all required info'
         else:
             if db.session.query(ContactsModel).filter(ContactsModel.phone == phone).count() == 0:
+                message = 'Hello! thank you for adding your phone to gameping.eddiefed.com! Please respond with ' \
+                          'YES if you want to opt in to receiving text messages! You can also respond with STOP at ' \
+                          'any time to stop receiving messages or visit gameping.eddiefed.com/takemeoff'
+                confirm(recipient=(phone + '@' + json.load(open('./carriers.json', 'r'))[carrier]), msg=message)
                 data = ContactsModel(name, phone, carrier, email)
                 db.session.add(data)
                 db.session.commit()
@@ -73,7 +82,7 @@ def signmeup():
 def takemeoff():
     if request.method == 'POST':
         phone = request.form['phone'].replace('-', '')
-        remove = db.session.query(ContactsModel).filter_by(phone=phone).first()
+        remove = db.session.query(ContactsModel).filter(ContactsModel.phone == phone).first()
         db.session.delete(remove)
         db.session.commit()
         return "Sorry!"

@@ -4,7 +4,7 @@
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">-->
+    <link rel="shortcut icon" href="https://www.eddiefed.com/favicon.ico">
     <title>Free games alert</title>
 
 
@@ -152,7 +152,15 @@
     <div class="t-1">
         <h1 class="t-2">Free games?</h1>
         <p class="t-2">That's crazy!</p>
-        <p class="t-3">Sign up below to get text messages when games are free on Steam, Epic Games and more!<br>Questions? visit the <a href="faq.html">FAQ</a> or email me at <i>eddiefedermeyer@yahoo.com</i></p>
+        <p class="t-3">Sign up below to get text messages when games are free on Steam, Epic Games and more!<br>Questions? visit the <a href="./faq">FAQ</a> or email me at <i>eddiefedermeyer@yahoo.com</i></p>
+
+        {% if response=="success" %}
+        <p class="success" style="color: green;">Thanks for signing up! Expect a confirmation text soon (may take up to half an hour)</p>
+        {% elif response=="inSystem" %}
+        <p class="fail" style="color: red;">This phone number already exists in the system, please try again!</p>
+        {% elif response=="blacklisted" %}
+        <p class="blacklist" style="color: red;">This phone number has been blacklisted, please contact me via email!</p>
+        {% endif %}
     </div>
     <div class="c-1">
         <form action="/signmeup" method="POST">

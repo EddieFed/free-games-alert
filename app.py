@@ -71,9 +71,9 @@ def signmeup():
                 data = ContactsModel(name, phone, carrier, email)
                 db.session.add(data)
                 db.session.commit()
-                return 'Enjoy the free games!!!'
+                return render_template('signmeup.html', response="success")
             else:
-                return 'Your number is already in the system silly!'
+                return render_template('signmeup.html', response="inSystem")
     else:
         return render_template('signmeup.html')
 
@@ -85,10 +85,15 @@ def takemeoff():
         remove = db.session.query(ContactsModel).filter(ContactsModel.phone == phone).first()
         db.session.delete(remove)
         db.session.commit()
-        return "Sorry!"
+        return render_template('takemeoff.html', response="goodbye")
 
     else:
         return render_template('takemeoff.html')
+
+
+@app.route('/faq')
+def faq():
+    return render_template('faq.html')
 
 
 @app.route('/debug')

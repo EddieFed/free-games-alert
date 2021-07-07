@@ -51,10 +51,10 @@ def __main__():
     soup = BeautifulSoup(res, 'html.parser')
 
     # Grabs the specific container that contains the latest post on the site
-    game_data = soup.find(class_='entry-title td-module-title')
-    game = game_data.get_text()
+    game_data = soup.find(class_='td-module-thumb')
+    game = game_data.a['title']
     link = game_data.a['href']
-    image_link = soup.find(class_='td-image-wrap').img['data-img-url']
+    image_link = game_data.a.span['data-bg']
 
     # Double checks that the game is different then the latest free game
     if db.session.query(LatestModel).filter(LatestModel.game == game).count() == 0:

@@ -4,7 +4,7 @@ import json
 import os
 
 # Local references
-from send_confirmation import confirm
+# from send_confirmation import confirm
 
 app = Flask(__name__)
 
@@ -17,9 +17,8 @@ except KeyError:
     print('Running with test db...\n\n')
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://postgres:root@192.168.1.140/test'
 
-
+app.config['SQLALCHEMY_DATABASE_URI'] = app.config['SQLALCHEMY_DATABASE_URI'].replace('postgres://', 'postgresql://')
 db = SQLAlchemy(app)
-
 
 class ContactsModel(db.Model):
     __tablename__ = 'contacts'

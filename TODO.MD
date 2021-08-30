@@ -2,7 +2,7 @@
  - ~~Phone verification~~
  - ~~Site CSS (enough to not make it look shit)~~
  - Add more carriers (maybe use a library to determine carrier for me)
- - Add options to toggle which sites you want texts for sites include:
+ - ******Add options to toggle which sites you want texts for sites include:
    - Steam
    - Epic games
    - Twitch Prime

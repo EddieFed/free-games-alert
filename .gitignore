@@ -5,3 +5,5 @@ config/temp.txt
 
 .idea
 .idea/*
+.vscode
+.vscode/*

@@ -1,16 +1,27 @@
+# 
+# This is a standalone script. Should be used by a cronjob or something similar
+# to check mailboxes periodically
+# 
+
 import imaplib
 import re
 
 # Local references
 from app import db, ContactsModel
-from config.vars import EMAIL_ADDRESS, EMAIL_PASSWORD, IMAP_SERVER
+from config.settings import settings
+
+#
+# Email init
+email_address   = settings["email"]["address"]
+email_password  = settings["email"]["password"]
+email_imap      = settings["email"]["imap"]
 
 # Connect to host
 # Oh and by the way fuck IMAP, it's confusing...
-imap = imaplib.IMAP4_SSL(IMAP_SERVER)
+imap = imaplib.IMAP4_SSL(email_imap)
 
 # Login to server
-imap.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+imap.login(email_address, email_password)
 
 # Select inbox
 imap.select('INBOX')

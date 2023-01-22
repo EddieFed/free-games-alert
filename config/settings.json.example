@@ -1,0 +1,56 @@
+{
+
+    "db": {
+        "engine": "",
+        "database": "",
+        "user": "",
+        "password": "",
+        "address": "",
+        "port": ""
+    },
+
+    "email": {
+        "smtp": "",
+        "imap": "",
+        "address": "",
+        "password": ""
+    },
+
+    "supported": [
+        "steam",
+        "playstation",
+        "epic",
+        "gog",
+        "ubisoft",
+        "indiegala",
+        "itch",
+        "amazon",
+        "other"
+    ],
+
+    "messages": [
+        "Guess what? Free Game!",
+        "Here's a free game for you!",
+        "Enjoy a free game!",
+        "Surprise!"
+    ],
+
+    "flair": [
+        "ᕕ(⌐■_■)ᕗ ♪♬",
+        "╰(✿˙ᗜ˙)੭━☆ﾟ.*･｡ﾟ",
+        "_|___|_  ╰(º o º╰)",
+        "ᕕ( ・‿・)つ-●-●"
+    ],
+
+    "carriers": {
+        "att": "mms.att.net",
+        "boost": "myboostmobile.com",
+        "cricket": "mms.cricketwireless.net",
+        "metro": "mymetropcs.com",
+        "sprint": "pm.sprint.com",
+        "tmobile": "tmomail.net",
+        "verizon": "vzwpix.com",
+        "visible": "vzwpix.com"
+    }
+
+}

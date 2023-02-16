@@ -19,5 +19,5 @@ requests==2.25.1
 soupsieve==2.0.1
 SQLAlchemy==1.4.20
 urllib3==1.26.6
-Werkzeug==2.0.1
+Werkzeug==2.2.3
 wincertstore==0.2

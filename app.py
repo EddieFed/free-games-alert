@@ -7,7 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 import os
 
 # Local references
-from scripts.mailer import send_confirmation
+from mailer import send_confirmation
 
 app = Flask(__name__)
 
@@ -23,6 +23,7 @@ except KeyError:
 app.config['SQLALCHEMY_DATABASE_URI'] = app.config['SQLALCHEMY_DATABASE_URI'].replace('postgres://', 'postgresql://')
 db = SQLAlchemy(app)
 
+app.app_context().push()
 
 class ContactsModel(db.Model):
     __tablename__ = 'contacts'

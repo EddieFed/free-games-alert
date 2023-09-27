@@ -13,7 +13,7 @@ from bs4 import BeautifulSoup
 
 # Local references
 from app import db, ContactsModel, LatestModel
-from scripts.mailer import send_gameping
+from mailer import send_gameping
 from config.settings import settings
 
 

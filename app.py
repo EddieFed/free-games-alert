@@ -7,7 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 import os
 
 # Local references
-from mailer import send_confirmation
+from scripts.mailer import send_confirmation
 
 app = Flask(__name__)
 
@@ -23,26 +23,27 @@ except KeyError:
 app.config['SQLALCHEMY_DATABASE_URI'] = app.config['SQLALCHEMY_DATABASE_URI'].replace('postgres://', 'postgresql://')
 db = SQLAlchemy(app)
 
+
 class ContactsModel(db.Model):
     __tablename__ = 'contacts'
-    name    = db.Column(db.String(50), primary_key=True)
-    phone   = db.Column(db.String(10), unique=True)
+    name = db.Column(db.String(50), primary_key=True)
+    phone = db.Column(db.String(10), unique=True)
     carrier = db.Column(db.String())
-    email   = db.Column(db.String())
-    send    = db.Column(db.Boolean(), default=False)
+    email = db.Column(db.String())
+    send = db.Column(db.Boolean(), default=False)
 
     def __init__(self, name, phone, carrier, email):
-        self.name       = name
-        self.phone      = phone
-        self.carrier    = carrier
-        self.email      = email
+        self.name = name
+        self.phone = phone
+        self.carrier = carrier
+        self.email = email
 
 
 class LatestModel(db.Model):
     __tablename__ = 'latestgames'
-    i       = db.Column(db.Integer(), autoincrement=True, primary_key=True)
-    time    = db.Column(db.DateTime(timezone=True), default=db.func.now())
-    game    = db.Column(db.VARCHAR(200))
+    i = db.Column(db.Integer(), autoincrement=True, primary_key=True)
+    time = db.Column(db.DateTime(timezone=True), default=db.func.now())
+    game = db.Column(db.VARCHAR(200))
 
     def __init__(self, game):
         self.game = game
@@ -56,10 +57,10 @@ def index():
 @app.route('/signmeup', methods=['POST', 'GET'])
 def signmeup():
     if request.method == 'POST':
-        name    = request.form['name']
-        phone   = request.form['phone'].replace('-', '')
+        name = request.form['name']
+        phone = request.form['phone'].replace('-', '')
         carrier = request.form['carrier']
-        email   = request.form['email'] or ''
+        email = request.form['email'] or ''
         print(name, phone, carrier, email)
 
         if name == '' or phone == '':

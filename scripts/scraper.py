@@ -6,31 +6,33 @@
     Copyright 2019 Eddie Federmeyer
 """
 import json
+import re
 from random import Random
 import requests
 from bs4 import BeautifulSoup
 
 # Local references
 from app import db, ContactsModel, LatestModel
-from mailer import send_gameping
+from scripts.mailer import send_gameping
 from config.settings import settings
 
 
 def __main__():
     # Sends a request for the entire page on IndieGameBundles
-    res     = requests.get('https://www.indiegamebundles.com/category/free/')
-    res     = res.text
-    soup    = BeautifulSoup(res, 'html.parser')
+    res = requests.get('https://www.indiegamebundles.com/category/free/')
+    res = res.text
+    soup = BeautifulSoup(res, 'html.parser')
 
     # Grabs the specific container that contains the latest post on the site
-    game_data   = soup.find(class_='td-module-thumb')
-    game        = game_data.a['title']
-    link        = game_data.a['href']
-    image_link  = game_data.a.span['data-bg']
+    game_data = soup.find(class_='td-image-wrap')
+    game = game_data['title']
+    link = game_data['href']
+    image_link = game_data.span['style']
+    image_link = re.search(r"url\((.*)\)", image_link).group(1)
 
-    # Double checks that the game is different then the latest free game
+    # Double checks that the game is different from the latest free game
     if db.session.query(LatestModel).filter(LatestModel.game == game).count() == 0:
-        # Write the new game to the db so I don't forget...
+        # Write the new game to the db, so I don't forget...
         db_latest_data = LatestModel(game)
         db.session.add(db_latest_data)
         db.session.commit()
@@ -48,7 +50,8 @@ def __main__():
         for contact in db.session.query(ContactsModel).filter(ContactsModel.send == True).all():
             # Formats recipient address
             recipient = contact.phone + '@' + carriers[contact.carrier]
-            send_gameping(game=game, link=link, recipient=recipient, image_link=image_link, subject=Random.choice(settings["messages"]), message=Random.choice(settings["flair"]))
+            send_gameping(game=game, link=link, recipient=recipient, image_link=image_link,
+                          subject=Random.choice(settings["messages"]), message=Random.choice(settings["flair"]))
 
         print('Mailing list finished!')
 

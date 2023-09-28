@@ -5,6 +5,9 @@
 
 import requests
 import smtplib
+from PIL import Image
+from io import BytesIO
+
 
 from email.mime.image import MIMEImage
 from email.mime.text import MIMEText
@@ -37,18 +40,22 @@ def send_confirmation(phone: str, carrier: str) -> None:
 
 # 
 # 
-def send_gameping(game: str, link: str, recipient: str, image_link: str, message: str, subject: str) -> None:
+def send_gameping(game: str, link: str, recipient: str, msg: str, subject: str, img, image_link=None) -> None:
     message             = MIMEMultipart()
     message['FROM']     = email_address
     message['TO']       = recipient
     message['SUBJECT']  = subject
     
-    message.attach(MIMEText(message + '\n.\n' + game + '\n' + link, 'plain'))
+    message.attach(MIMEText(msg + '\n.\n' + game + '\n' + link, 'plain'))
 
     # Open image in binary mode
-    with requests.get(image_link) as attachment:
-        part = MIMEImage(attachment.content)
-        message.attach(part)
+    # with requests.get(image_link) as res:
+    #     img = Image.open(BytesIO(res.content))
+    #     part = MIMEImage(img)
+    #     message.attach(part)
+    part = MIMEImage(img.getvalue())
+    message.attach(part)
+
 
     send_mail(recipient, message)
 

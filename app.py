@@ -18,7 +18,7 @@ try:
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 except KeyError:
     print('Running with test db...\n\n')
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://postgres:password@localhost/gameping'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://username:password@localhost/gameping'
 
 app.config['SQLALCHEMY_DATABASE_URI'] = app.config['SQLALCHEMY_DATABASE_URI'].replace('postgres://', 'postgresql://')
 db = SQLAlchemy(app)
@@ -41,7 +41,7 @@ class ContactsModel(db.Model):
 
 
 class LatestModel(db.Model):
-    __tablename__ = 'latestgames'
+    __tablename__ = 'games'
     i = db.Column(db.Integer(), autoincrement=True, primary_key=True)
     time = db.Column(db.DateTime(timezone=True), default=db.func.now())
     game = db.Column(db.VARCHAR(200))

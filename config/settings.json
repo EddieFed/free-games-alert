@@ -10,10 +10,10 @@
     },
 
     "email": {
-        "smtp": "",
-        "imap": "",
-        "address": "",
-        "password": ""
+        "smtp": "smtp.gmail.com",
+        "imap": "imap.gmail.com",
+        "address": "alert.free.games",
+        "password": "iqqj lmdw mnaj fagz"
     },
 
     "supported": [

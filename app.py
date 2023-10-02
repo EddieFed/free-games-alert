@@ -4,12 +4,13 @@
 
 from flask import Flask, request, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-import os
-
-from config.settings import settings
+from flask_apscheduler import APScheduler
 
 # Local references
+from scraper import scrape
+from confirm import confirm_number
 from mailer import send_confirmation
+from config.settings import settings
 
 app = Flask(__name__)
 
@@ -29,6 +30,12 @@ else:
 
 db = SQLAlchemy(app)
 app.app_context().push()
+
+scheduler = APScheduler()
+scheduler.init_app(app)
+scheduler.add_job("scrape-job", scrape, trigger="cron", minute="0,30", jitter=(2 * 60))
+scheduler.add_job("confirm-job", confirm_number, trigger="cron", minute="*", jitter=(2 * 60))
+scheduler.start()
 
 
 class ContactsModel(db.Model):

@@ -21,7 +21,7 @@ from mailer import send_gameping, send_message
 from config.settings import settings
 
 
-def __main__():
+def scrape():
     # Sends a request for the entire page on IndieGameBundles
     with Display(visible=False, size=(696, 392)) as display:
         options = webdriver.ChromeOptions()
@@ -95,4 +95,4 @@ def __main__():
 
 
 if __name__ == '__main__':
-    __main__()
+    scrape()

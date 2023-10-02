@@ -4,5 +4,5 @@
 PATH=$PATH:~/gameping && \
 
 source ~/gameping/menv/bin/activate && \
-python ~/gameping/scripts/confirm.py && \
-python ~/gameping/scripts/scraper.py
+python ~/gameping/confirm.py && \
+python ~/gameping/scraper.py

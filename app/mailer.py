@@ -5,8 +5,6 @@
 
 import requests
 import smtplib
-from PIL import Image
-from io import BytesIO
 
 from email.mime.image import MIMEImage
 from email.mime.text import MIMEText

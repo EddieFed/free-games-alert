@@ -7,7 +7,8 @@ import imaplib
 import re
 
 # Local references
-from app import db, ContactsModel
+from app.app import db
+from app.models.contact import ContactsModel
 from config.settings import settings
 
 

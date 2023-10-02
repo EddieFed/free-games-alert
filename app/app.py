@@ -1,7 +1,3 @@
-#
-# 
-# 
-
 from flask import Flask, request, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_apscheduler import APScheduler
@@ -36,31 +32,6 @@ scheduler.init_app(app)
 scheduler.add_job("scrape-job", scrape, trigger="cron", minute="0,30", jitter=(2 * 60))
 scheduler.add_job("confirm-job", confirm_number, trigger="cron", minute="*", jitter=(2 * 60))
 scheduler.start()
-
-
-class ContactsModel(db.Model):
-    __tablename__ = 'contacts'
-    name = db.Column(db.String(50), primary_key=True)
-    phone = db.Column(db.String(10), unique=True)
-    carrier = db.Column(db.String())
-    email = db.Column(db.String())
-    send = db.Column(db.Boolean(), default=False)
-
-    def __init__(self, name, phone, carrier, email):
-        self.name = name
-        self.phone = phone
-        self.carrier = carrier
-        self.email = email
-
-
-class LatestModel(db.Model):
-    __tablename__ = 'games'
-    i = db.Column(db.Integer(), autoincrement=True, primary_key=True)
-    time = db.Column(db.DateTime(timezone=True), default=db.func.now())
-    game = db.Column(db.VARCHAR(200))
-
-    def __init__(self, game):
-        self.game = game
 
 
 @app.route('/')

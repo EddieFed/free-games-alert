@@ -5,10 +5,8 @@
 
     Copyright 2019 Eddie Federmeyer
 """
-import json
 import re
 import random
-import requests
 from io import BytesIO
 from PIL import Image
 from pyvirtualdisplay import Display
@@ -16,7 +14,9 @@ from selenium import webdriver
 from bs4 import BeautifulSoup
 
 # Local references
-from app import db, ContactsModel, LatestModel
+from app.app import db
+from app.models.contact import ContactsModel
+from app.models.game import LatestModel
 from mailer import send_gameping, send_message
 from config.settings import settings
 

@@ -3,7 +3,7 @@
     "db": {
         "engine": "",
         "database": "",
-        "user": "",
+        "username": "",
         "password": "",
         "address": "",
         "port": ""

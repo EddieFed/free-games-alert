@@ -3,9 +3,9 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_apscheduler import APScheduler
 
 # Local references
-from scraper import scrape
-from confirm import confirm_number
-from mailer import send_confirmation
+from app import scraper, confirm, mailer
+from app.models.game import LatestModel
+from app.models.contact import ContactsModel
 from config.settings import settings
 
 app = Flask(__name__)
@@ -29,8 +29,8 @@ app.app_context().push()
 
 scheduler = APScheduler()
 scheduler.init_app(app)
-scheduler.add_job("scrape-job", scrape, trigger="cron", minute="0,30", jitter=(2 * 60))
-scheduler.add_job("confirm-job", confirm_number, trigger="cron", minute="*", jitter=(2 * 60))
+scheduler.add_job("scrape-job", scraper.scrape, trigger="cron", minute="0,30", jitter=(2 * 60))
+scheduler.add_job("confirm-job", confirm.confirm_number, trigger="cron", minute="*", jitter=(2 * 60))
 scheduler.start()
 
 
@@ -52,7 +52,7 @@ def signmeup():
             return 'Please include all required info'
         else:
             if db.session.query(ContactsModel).filter(ContactsModel.phone == phone).count() == 0:
-                send_confirmation(phone, carrier)
+                mailer.send_confirmation(phone, carrier)
 
                 data = ContactsModel(name, phone, carrier, email)
                 db.session.add(data)

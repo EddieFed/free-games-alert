@@ -1,2 +1,2 @@
-from app import app, confirm, mailer, scraper, wsgi
+from app import app, confirm, mailer, scraper
 

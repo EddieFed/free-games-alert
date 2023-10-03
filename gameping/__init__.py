@@ -6,7 +6,7 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).parent.parent.absolute()))
 # We need to add the child paths to the project! This is so BS...
 
-from config.settings import settings
+from gameping.config.settings import settings
 db_config = settings["db"]
 
 db = SQLAlchemy()

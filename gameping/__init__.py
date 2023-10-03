@@ -1,6 +1,11 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).parent.parent.absolute()))
+# We need to add the child paths to the project! This is so BS...
+
 from config.settings import settings
 db_config = settings["db"]
 

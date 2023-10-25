@@ -17,8 +17,8 @@ def create_app() -> Flask:
 
     # app.debug = False
     app.config["SQLALCHEMY_DATABASE_URI"] = f"{db_config['database']}{db_config['engine']}" \
-                                            f"://{db_config['username']}@{db_config['password']}" \
-                                            f"@{db_config['address']}]"
+                                            f"://{db_config['username']}:{db_config['password']}" \
+                                            f"@{db_config['address']}"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     from gameping.web.views import web_blueprint as main_blueprint

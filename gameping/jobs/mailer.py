@@ -72,5 +72,5 @@ def send_mail(recipient: str, message: MIMEMultipart) -> None:
     server.login(email_address, email_password)
     server.sendmail(email_address, recipient, message.as_string())
 
-    print('Mail sent to "', recipient, '"!')
+    print(f'Mail sent to {recipient}!')
     return None

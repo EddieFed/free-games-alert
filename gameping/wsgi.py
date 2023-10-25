@@ -31,8 +31,9 @@ def scraper():
 
 scheduler = APScheduler()
 scheduler.init_app(app)
-scheduler.start()
-scheduler.add_job("confirmation", confirm, trigger="cron", minute="*/2", jitter=60)
+scheduler.add_job("confirmation", confirm, trigger="cron", minute="*")
 scheduler.add_job("scraper", scraper, trigger="cron", hour="*", jitter=120)
+scheduler.start()
 
-app.run(host="127.0.0.1", port=8000, debug=True)
+if __name__ == '__main__':
+    app.run(host="127.0.0.1", port=8000, debug=True, use_reloader=False)

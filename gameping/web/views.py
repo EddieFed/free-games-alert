@@ -1,63 +1,67 @@
-from flask import render_template, Blueprint, redirect, url_for, request
-from gameping import db
-from gameping.models import ContactsModel, LatestModel
-from jobs.mailer import send_confirmation
+# External library imports
+from flask import render_template, redirect, url_for, request, Response
 
-web_blueprint = Blueprint('web', __name__)
-
-
-# localhost:5000 will access this entrypoint & render template from login.html
-@web_blueprint.route('/')
-def index():
-    return redirect(url_for('web.signmeup'))
+# Local library imports
+from gameping.web import bp
+from gameping.database import db
+from gameping.models import User
 
 
-@web_blueprint.route('/signmeup', methods=['POST', 'GET'])
-def signmeup():
+@bp.route('/')
+def index() -> Response:
+    return redirect(url_for('web.signup'))
+
+
+@bp.route('/signup', methods=['POST', 'GET'])
+def signup() -> str:
     if request.method == 'POST':
-        name = request.form['name']
-        phone = request.form['phone'].replace('-', '')
-        carrier = request.form['carrier']
-        email = request.form['email'] or ''
-        print(name, phone, carrier, email)
+        name: str       = request.form['name']
+        phone: str      = request.form['phone'].replace('-', '')
+        carrier: str    = request.form['carrier']
+        email: str      = request.form['email'] or ''
 
+        print(f'Received request with: {name}, {phone}, {carrier}, {email}')
         if name == '' or phone == '':
             return 'Please include all required info'
         else:
-            if db.session.query(ContactsModel).filter(ContactsModel.phone == phone).count() == 0:
-                send_confirmation(phone, carrier)
+            if db.session.query(User).filter(User.phone == phone).count() == 0:
+                # mailer.send_confirmation(phone, carrier)
 
-                data = ContactsModel(name, phone, carrier, email)
+                data = User()
+                data.name = name
+                data.phone = phone
+                data.carrier = carrier
+                data.email = email
                 db.session.add(data)
                 db.session.commit()
-                return render_template('signmeup.html', response="success")
+                return render_template('signup.html', response="success")
             else:
-                return render_template('signmeup.html', response="inSystem")
+                return render_template('signup.html', response="inSystem")
     else:
-        return render_template('signmeup.html')
+        return render_template('signup.html')
 
 
-@web_blueprint.route('/takemeoff', methods=['POST', 'GET'])
-def takemeoff():
+@bp.route('/remove', methods=['POST', 'GET'])
+def remove() -> str:
     if request.method == 'POST':
         phone = request.form['phone'].replace('-', '')
-        remove = db.session.query(ContactsModel).filter(ContactsModel.phone == phone).first()
-        db.session.delete(remove)
+        user = db.session.query(User).filter(User.phone == phone).first()
+        db.session.delete(user)
         db.session.commit()
-        return render_template('takemeoff.html', response="goodbye")
+        return render_template('remove.html', response="goodbye")
 
     else:
-        return render_template('takemeoff.html')
+        return render_template('remove.html')
 
 
-@web_blueprint.route('/faq')
-def faq():
+@bp.route('/faq')
+def faq() -> str:
     return render_template('faq.html')
 
 
-@web_blueprint.route('/debug')
-def debug():
-    contacts = db.session.query(ContactsModel).all()
-    for person in contacts:
+@bp.route('/debug')
+def debug() -> str:
+    users = db.session.query(User).all()
+    for person in users:
         print(person.name, person.phone, person.carrier, person.email)
     return 'Nothing to see here!'

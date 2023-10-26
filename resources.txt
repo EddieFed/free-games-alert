@@ -1,0 +1,12 @@
+
+Project Structure:
+https://www.youtube.com/watch?v=6c_utRUzHG4&list=PLIPftk-0JEAdHRM_l59jJPq_Xa9y5d_Kc&index=7
+https://www.digitalocean.com/community/tutorials/how-to-structure-a-large-flask-application-with-flask-blueprints-and-flask-sqlalchemy#step-4-creating-flask-blueprints
+
+Config Instances:
+https://www.youtube.com/watch?v=GW_2O9CrnSU
+https://uniwebsidad.com/libros/explore-flask/chapter-5/instance-folder#:~:text=The%20instance%20folder%20is%20a%20sub-directory%20of%20the,file%20specifically%20for%20this%20instance%20of%20the%20application.
+
+Flask-SQLAlchemy
+https://flask-sqlalchemy.palletsprojects.com/en/3.1.x/quickstart/
+https://docs.sqlalchemy.org/en/20/dialects/mysql.html#module-sqlalchemy.dialects.mysql.mysqlconnector
